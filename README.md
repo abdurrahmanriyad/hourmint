@@ -67,7 +67,8 @@ One-time setup:
 
 1. Add repository secrets (Settings → Secrets and variables → Actions):
    - `TAURI_SIGNING_PRIVATE_KEY`: the contents of `~/.tauri/hourmint.key` (the updater signing key; its public half is in `tauri.conf.json`). **Back this file up.** If it's lost, installed copies can't verify future updates.
-   - `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`: empty (the key has no password).
+     `gh secret set TAURI_SIGNING_PRIVATE_KEY --repo abdurrahmanriyad/hourmint --body "$(cat ~/.tauri/hourmint.key)"`
+   - `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` is only needed if you regenerate the key with a password. A missing secret counts as empty.
 2. The repository must be public for the updater and download links to work without a token.
 3. To publish the landing page, enable GitHub Pages with source "GitHub Actions" and custom domain `hourmint.abdur.tech` (DNS: CNAME `hourmint` → `abdurrahmanriyad.github.io`).
 
