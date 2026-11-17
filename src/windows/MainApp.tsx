@@ -3,6 +3,7 @@ import { HashRouter, NavLink, Route, Routes, useNavigate } from "react-router-do
 import { listen } from "@tauri-apps/api/event";
 import { ClockIcon, FileIcon, GearIcon, ListIcon, UsersIcon } from "../components/icons";
 import { Button, cx, useUi } from "../components/ui";
+import appIcon from "../assets/app-icon.png";
 import { installUpdate, useUpdate } from "../lib/updates";
 import { formatHMS } from "../lib/format";
 import { useNow, useRunning, useSettingsValue } from "../lib/queries";
@@ -103,11 +104,11 @@ function Layout() {
 
   return (
     <div className="flex h-full">
-      <nav aria-label="Main" className="flex w-52 shrink-0 flex-col border-r border-border bg-surface-2/40 pt-4">
-        <div className="mb-4 flex items-center gap-2 px-5">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-mint-400 to-mint-700 text-white">
-            <ClockIcon size={14} />
-          </span>
+      <nav aria-label="Main" className="flex w-52 shrink-0 flex-col border-r border-border bg-surface-2/60">
+        {/* Space for the macOS window buttons (title bar overlay); drag to move the window. */}
+        <div data-tauri-drag-region className="h-12 shrink-0" />
+        <div data-tauri-drag-region className="mb-4 flex items-center gap-2 px-5">
+          <img src={appIcon} alt="" width={26} height={26} className="-m-0.5" draggable={false} />
           <span className="text-[15px] font-semibold tracking-tight">{t.appName}</span>
         </div>
         <RunningPill />

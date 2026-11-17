@@ -5,6 +5,9 @@ import { formatDate, formatMoney, isValidCurrency } from "../lib/format";
 import { displayShortcut, eventToAccelerator } from "../lib/shortcut";
 import { usePrefs, useSettingsValue } from "../lib/queries";
 import { checkForUpdate, useAppInfo } from "../lib/updates";
+import { openUrl } from "@tauri-apps/plugin-opener";
+
+const REPO = "https://github.com/abdurrahmanriyad/hourmint";
 import { t } from "../strings";
 import { CurrencyInput, MoneyInput } from "../components/inputs";
 import { Button, Card, Field, Input, PageHeader, Select, Textarea, Toggle, cx, useUi } from "../components/ui";
@@ -248,6 +251,17 @@ function DataSection() {
                 {checking ? t.settings.checking : t.settings.checkUpdates}
               </Button>
             )}
+            <span className="ml-auto flex gap-1">
+              <Button size="sm" variant="ghost" onClick={() => openUrl(`${REPO}/issues/new`)}>
+                {t.settings.reportProblem}
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => openUrl(REPO)}>
+                {t.settings.starOnGitHub}
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => openUrl("https://hourmint.abdur.tech")}>
+                {t.settings.website}
+              </Button>
+            </span>
           </div>
         )}
       </div>

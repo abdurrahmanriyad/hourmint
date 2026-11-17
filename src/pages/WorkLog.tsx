@@ -192,7 +192,7 @@ export function WorkLogPage() {
               </option>
             ))}
           </Select>
-          <Select aria-label={t.common.billable} className="w-48" value={billable} onChange={(e) => setBillable(e.target.value as "" | "yes" | "no")}>
+          <Select aria-label={t.common.billable} className="w-52" value={billable} onChange={(e) => setBillable(e.target.value as "" | "yes" | "no")}>
             <option value="">{t.log.anyBillable}</option>
             <option value="yes">{t.common.billable}</option>
             <option value="no">{t.common.nonBillable}</option>

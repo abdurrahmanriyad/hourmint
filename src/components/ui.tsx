@@ -306,8 +306,8 @@ export function Spinner() {
 
 export function PageHeader({ title, actions, children }: { title: string; actions?: ReactNode; children?: ReactNode }) {
   return (
-    <header className="flex flex-wrap items-center gap-3 border-b border-border px-6 py-4">
-      <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
+    <header data-tauri-drag-region className="flex min-h-[60px] flex-wrap items-center gap-3 border-b border-border px-6 py-3">
+      <h1 data-tauri-drag-region className="text-lg font-semibold tracking-tight">{title}</h1>
       {children}
       <div className="ml-auto flex items-center gap-2">{actions}</div>
     </header>

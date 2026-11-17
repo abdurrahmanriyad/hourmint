@@ -5,9 +5,9 @@ import { displayShortcut } from "../lib/shortcut";
 import { useSettingsValue } from "../lib/queries";
 import { t } from "../strings";
 import { ClientFields, emptyClient } from "../components/forms";
-import { ClockIcon } from "../components/icons";
 import { CurrencyInput, MoneyInput, PROJECT_COLORS } from "../components/inputs";
 import { Button, Field, Input, Textarea, useUi } from "../components/ui";
+import appIcon from "../assets/app-icon.png";
 
 const STEPS = 4;
 
@@ -63,15 +63,14 @@ export function Onboarding() {
   const finish = () => run(async () => void (await api.updateSettings({ onboarded: true })));
 
   return (
-    <div className="flex h-full items-center justify-center overflow-y-auto bg-bg p-8">
+    <div className="relative flex h-full items-center justify-center overflow-y-auto bg-bg p-8">
+      <div data-tauri-drag-region className="absolute inset-x-0 top-0 h-10" />
       <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-xl">
         {step > 0 && step <= STEPS && <p className="mb-2 text-xs font-medium text-muted">{t.onboarding.step(step, STEPS)}</p>}
 
         {step === 0 && (
           <div className="flex flex-col items-center gap-4 text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-mint-400 to-mint-700 text-white shadow-lg">
-              <ClockIcon size={30} />
-            </span>
+            <img src={appIcon} alt="" width={80} height={80} draggable={false} />
             <h1 className="text-2xl font-semibold tracking-tight">{t.onboarding.welcome}</h1>
             <p className="text-sm text-muted">{t.onboarding.welcomeBody}</p>
             <Button variant="primary" size="lg" onClick={() => setStep(1)} autoFocus>

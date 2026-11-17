@@ -8,9 +8,14 @@
   <link rel="canonical" href="https://hourmint.abdur.tech/" />
   <meta property="og:title" content="Hourmint: time tracking for client work" />
   <meta property="og:description" content="Menu bar time tracking for freelancers: an honest record of your client work, with timesheets and invoices. Private, free and open source." />
-  <meta property="og:image" content="https://hourmint.abdur.tech/img/today.png" />
+  <meta property="og:image" content="https://hourmint.abdur.tech/img/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Hourmint: every hour of client work, on record. Free, open source time tracker for Mac." />
+  <meta property="og:type" content="website" />
   <meta property="og:url" content="https://hourmint.abdur.tech/" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://hourmint.abdur.tech/img/og.png" />
   <link rel="icon" type="image/png" href="img/icon.png" />
   <meta name="color-scheme" content="light dark" />
   <style>
@@ -65,10 +70,9 @@
     .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .fine { margin-top: 14px; font-size: 13px; color: var(--muted); }
 
-    .shot { margin: 56px auto 0; max-width: 1040px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
-      box-shadow: var(--shadow); background: var(--surface); }
-    .shot .bar { display: flex; gap: 7px; padding: 11px 14px; background: var(--surface-2); border-bottom: 1px solid var(--border); }
-    .shot .bar i { width: 11px; height: 11px; border-radius: 50%; background: var(--border); }
+    .shot { margin: 56px auto 0; max-width: 1100px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);
+      box-shadow: var(--shadow); }
+    @media (max-width: 600px) { .shot { border-radius: 10px; margin-top: 40px; } }
 
     section { padding: 88px 0; }
     h2 { font-size: clamp(28px, 4vw, 40px); line-height: 1.1; letter-spacing: -.025em; margin: 0 0 14px; }
@@ -104,6 +108,13 @@
       border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-weight: 700; font-size: 14px; }
     code { font: 13.5px ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--surface-2); padding: 2px 6px; border-radius: 6px; }
 
+    .faq { max-width: 760px; }
+    .faq details { border-bottom: 1px solid var(--border); padding: 4px 0; }
+    .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; padding: 16px 0; font-weight: 600; font-size: 17px; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; color: var(--muted); font-weight: 400; font-size: 22px; line-height: 1; }
+    .faq details[open] summary::after { content: "\2212"; }
+    .faq details p { margin: 0 0 18px; color: var(--muted); }
     .final { text-align: center; }
     .final .lead { margin-bottom: 28px; }
     footer { border-top: 1px solid var(--border); padding: 32px 0 48px; color: var(--muted); font-size: 14px; }
@@ -121,8 +132,9 @@
       <nav aria-label="Primary">
         <a class="hide-sm" href="#features">Features</a>
         <a class="hide-sm" href="#privacy">Privacy</a>
+        <a class="hide-sm" href="#faq">FAQ</a>
         <a class="hide-sm" href="https://github.com/abdurrahmanriyad/hourmint">GitHub</a>
-        <a class="btn btn-primary btn-sm" href="https://github.com/abdurrahmanriyad/hourmint/releases/latest">Download</a>
+        <a class="btn btn-primary btn-sm" href="https://github.com/abdurrahmanriyad/hourmint/releases/latest/download/Hourmint.dmg">Download</a>
       </nav>
     </div>
   </header>
@@ -133,7 +145,7 @@
       <h1>Every hour of client work, on record.</h1>
       <p class="lead">Hourmint lives in your menu bar. Start a timer when you begin, and it keeps a clear, honest record of what you worked on, for which client and for how long. When it's time to bill, it turns that record into a PDF invoice with a detailed timesheet.</p>
       <div class="cta">
-        <a class="btn btn-primary" href="https://github.com/abdurrahmanriyad/hourmint/releases/latest">
+        <a class="btn btn-primary" href="https://github.com/abdurrahmanriyad/hourmint/releases/latest/download/Hourmint.dmg">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg>
           Download for Mac
         </a>
@@ -141,11 +153,11 @@
       </div>
       <p class="fine">Free and open source. For macOS 13 or later on Apple Silicon and Intel. No account needed.</p>
 
-      <div class="shot" role="img" aria-label="The Hourmint main window showing a running timer, today's entries, quick start and hours per client">
-        <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="shot">
         <picture>
-          <source srcset="img/today-dark.png" media="(prefers-color-scheme: dark)" />
-          <img src="img/today.png" alt="" width="2360" height="1480" />
+          <source srcset="img/hero-dark.webp" media="(prefers-color-scheme: dark)" />
+          <img src="img/hero.webp" width="2400" height="1320" fetchpriority="high"
+            alt="A Mac desktop with the Hourmint timer showing 0:47:15 in the menu bar, its popover open below it, and the Hourmint work log window behind" />
         </picture>
       </div>
     </div>
@@ -200,7 +212,7 @@
             <li><span><strong>Gentle reminders.</strong> A nudge if you forget to start, and a warning if a timer has run for hours.</span></li>
           </ul>
         </div>
-        <img class="popover-img" src="img/popover.png" width="680" height="1000" alt="The Hourmint menu bar popover with a running timer and quick-start list" loading="lazy" />
+        <img class="popover-img" src="img/popover.webp" width="680" height="1000" alt="The Hourmint menu bar popover with a running timer and quick-start list" loading="lazy" />
       </div>
     </section>
 
@@ -215,7 +227,7 @@
             <li><span><strong>Simple status tracking.</strong> Mark invoices as sent or paid yourself, and see which are overdue.</span></li>
           </ul>
         </div>
-        <img class="paper" src="img/invoice.png" width="1300" height="1050" alt="An invoice preview with line items per project, subtotal and total due" loading="lazy" />
+        <img class="paper" src="img/invoice.webp" width="1300" height="1050" alt="An invoice preview with line items per project, subtotal and total due" loading="lazy" />
       </div>
     </section>
 
@@ -236,10 +248,48 @@
         <h2>Install in a minute.</h2>
         <p class="section-lead">Hourmint isn't notarized by Apple yet, so macOS asks you to confirm the first launch.</p>
         <div class="install">
-          <div class="card"><h3>Download</h3><p>Get the latest <code>.dmg</code> from the <a href="https://github.com/abdurrahmanriyad/hourmint/releases/latest">releases page</a> and drag Hourmint to Applications.</p></div>
+          <div class="card"><h3>Download</h3><p>Download <a href="https://github.com/abdurrahmanriyad/hourmint/releases/latest/download/Hourmint.dmg">Hourmint.dmg</a>, open it and drag Hourmint to your Applications folder.</p></div>
           <div class="card"><h3>Open once</h3><p>Open Hourmint. If macOS says it can't verify the developer, go to System Settings &gt; Privacy &amp; Security and click <strong>Open Anyway</strong>.</p></div>
           <div class="card"><h3>Track</h3><p>Add your first client and press Start. Updates install from inside the app from then on.</p></div>
         </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap faq">
+        <h2>Questions</h2>
+        <details>
+          <summary>Is Hourmint really free?</summary>
+          <p>Yes. It's free and open source under the MIT licence. There's no paid plan, no trial and no ads.</p>
+        </details>
+        <details>
+          <summary>Does Hourmint send invoices or take payments?</summary>
+          <p>No. Hourmint creates the PDF invoice and timesheet. You send them to your client and get paid the way you already do.</p>
+        </details>
+        <details>
+          <summary>Does it sync between Macs or with my phone?</summary>
+          <p>No. Your data stays on one Mac, and there's no phone app. To move to a new Mac, use Settings &gt; Data &gt; Back up to file, then Restore from file on the new Mac.</p>
+        </details>
+        <details>
+          <summary>Is there a Windows or Linux version?</summary>
+          <p>Not yet. Hourmint is Mac only for now. If you'd like another platform, <a href="https://github.com/abdurrahmanriyad/hourmint/issues">open an issue</a> and say so.</p>
+        </details>
+        <details>
+          <summary>macOS says it can't verify the developer. Is it safe?</summary>
+          <p>Hourmint isn't notarized by Apple yet, so macOS shows this warning the first time. Go to System Settings &gt; Privacy &amp; Security and click Open Anyway. The full source code is <a href="https://github.com/abdurrahmanriyad/hourmint">on GitHub</a> if you'd like to check it.</p>
+        </details>
+        <details>
+          <summary>How do updates work?</summary>
+          <p>Hourmint checks GitHub for a new version when it starts and every 12 hours. When one is available, you install it from inside the app. A running timer keeps running.</p>
+        </details>
+        <details>
+          <summary>Why is it open source?</summary>
+          <p>So you can see exactly what it does with your data, and so it keeps working for you whatever happens to the project.</p>
+        </details>
+        <details>
+          <summary>Where do I report a bug or ask for a feature?</summary>
+          <p>Open an issue on <a href="https://github.com/abdurrahmanriyad/hourmint/issues">GitHub</a>. You can also use Report a problem in the app's Settings.</p>
+        </details>
       </div>
     </section>
 
@@ -247,7 +297,7 @@
       <div class="wrap">
         <h2>Stop guessing what you worked on.</h2>
         <p class="lead">Free and open source. No sign-up, no account.</p>
-        <a class="btn btn-primary" href="https://github.com/abdurrahmanriyad/hourmint/releases/latest">Download Hourmint for Mac</a>
+        <a class="btn btn-primary" href="https://github.com/abdurrahmanriyad/hourmint/releases/latest/download/Hourmint.dmg">Download Hourmint for Mac</a>
       </div>
     </section>
   </main>
