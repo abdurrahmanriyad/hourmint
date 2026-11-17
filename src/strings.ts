@@ -3,7 +3,7 @@
 
 export const t = {
   appName: "Hourmint",
-  tagline: "Turn your hours into money",
+  tagline: "Time tracking for client work",
 
   nav: {
     today: "Today",
