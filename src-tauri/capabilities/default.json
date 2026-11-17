@@ -1,0 +1,24 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Permissions for all Hourmint windows",
+  "windows": [
+    "main",
+    "popover",
+    "idle"
+  ],
+  "permissions": [
+    "core:default",
+    "core:window:allow-hide",
+    "core:window:allow-show",
+    "core:window:allow-set-focus",
+    "core:window:allow-close",
+    "dialog:default",
+    "notification:default",
+    "opener:default",
+    "autostart:default",
+    "global-shortcut:default",
+    "updater:default",
+    "process:allow-restart"
+  ]
+}
