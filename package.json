@@ -14,13 +14,13 @@
     "test:rust": "cd src-tauri && cargo test",
     "test:all": "npm run typecheck && npm test && npm run test:rust",
     "demo": "vite --port 1430 --open /demo.html",
-    "build:local": "tauri build --bundles app,dmg"
+    "build:local": "tauri build --bundles app,dmg",
+    "build:appstore": "bash scripts/appstore.sh"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",
     "@tanstack/react-query": "^5.107.1",
     "@tauri-apps/api": "^2.12.5",
-    "@tauri-apps/plugin-autostart": "^2.7.0",
     "@tauri-apps/plugin-dialog": "^2.8.4",
     "@tauri-apps/plugin-global-shortcut": "^2.4.1",
     "@tauri-apps/plugin-notification": "^2.8.1",
@@ -44,5 +44,6 @@
     "typescript": "5.9",
     "vite": "^8.3.8",
     "vitest": "^5.1.0"
-  }
+  },
+  "license": "MIT"
 }

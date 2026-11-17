@@ -14,3 +14,5 @@ if (frame) {
   Object.assign(root.style, { width: `${frame[1]}px`, height: `${frame[2]}px`, overflow: "hidden", margin: "24px", borderRadius: "12px", boxShadow: "0 12px 32px rgba(0,0,0,.25)", position: "relative", transform: "translateZ(0)" });
 }
 await import("../main");
+// &scroll=bottom scrolls the page content to the end once it has rendered.
+if (params.get("scroll") === "bottom") setTimeout(() => document.querySelector("main")?.scrollTo(0, 1e6), 1500);

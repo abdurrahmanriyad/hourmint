@@ -150,6 +150,7 @@ fn notify(app: &AppHandle, title: &str, body: &str) {
 }
 
 pub fn spawn_monitor(app: AppHandle) {
+    log::info!("idle detection: system reports {:?}s since last input", system_idle_seconds());
     std::thread::spawn(move || {
         let mut prev_tick = Utc::now();
         loop {

@@ -220,6 +220,7 @@ export function installDemoBackend(label: string, theme: string | null, onboarde
       case "read_logo": return null;
       case "data_info":
         return { dbPath: "~/Library/Application Support/app.hourmint.desktop/hourmint.sqlite", backupDir: "~/Library/Application Support/app.hourmint.desktop/backups", backups: [0, 1, 2].map((d) => ({ name: `hourmint-daily-${dateStr(today - d * DAY)}.sqlite`, path: `/b${d}`, size: 412_000 - d * 3000, modified: iso(today - d * DAY + 9 * 3600_000) })), schemaVersion: 2, appVersion: "0.1.0" };
+      case "app_info": return { distribution: "direct", updates: false };
       case "get_idle_state": return { idleSince: iso(now - 14 * 60_000), entry: running };
       default:
         console.warn("demo: unhandled command", cmd, args);

@@ -274,6 +274,11 @@ export interface BackupFile {
   modified: string | null;
 }
 
+export interface AppInfo {
+  distribution: "direct" | "appstore";
+  updates: boolean;
+}
+
 export interface DataInfo {
   dbPath: string;
   backupDir: string;
@@ -372,4 +377,5 @@ export const api = {
   showMainWindow: (route?: string) => invoke<void>("show_main_window", { route: route ?? null }),
   hidePopover: () => invoke<void>("hide_popover"),
   quitApp: () => invoke<void>("quit_app"),
+  appInfo: () => invoke<AppInfo>("app_info"),
 };

@@ -4,7 +4,7 @@ import { api, errorMessage, type SettingsPatch } from "../lib/api";
 import { formatDate, formatMoney, isValidCurrency } from "../lib/format";
 import { displayShortcut, eventToAccelerator } from "../lib/shortcut";
 import { usePrefs, useSettingsValue } from "../lib/queries";
-import { checkForUpdate } from "../lib/updates";
+import { checkForUpdate, useAppInfo } from "../lib/updates";
 import { t } from "../strings";
 import { CurrencyInput, MoneyInput } from "../components/inputs";
 import { Button, Card, Field, Input, PageHeader, Select, Textarea, Toggle, cx, useUi } from "../components/ui";
@@ -172,6 +172,7 @@ function DataSection() {
   };
 
   const qc = useQueryClient();
+  const appInfo = useAppInfo();
   const [checking, setChecking] = useState(false);
   const checkUpdates = async () => {
     setChecking(true);
@@ -201,7 +202,7 @@ function DataSection() {
   return (
     <Card className="p-5">
       <h2 className="text-[15px] font-semibold">{t.settings.data}</h2>
-      <p className="mt-0.5 text-xs text-muted">{t.settings.privacy}</p>
+      <p className="mt-0.5 text-xs text-muted">{appInfo?.updates ? t.settings.privacy : t.settings.privacyOffline}</p>
       <div className="mt-4 flex flex-col gap-4">
         <Field label={t.settings.dbLocation}>
           <div className="flex items-center gap-2">
@@ -242,9 +243,11 @@ function DataSection() {
         {info && (
           <div className="flex items-center gap-3">
             <p className="text-xs text-muted">{t.settings.version(info.appVersion)}</p>
-            <Button size="sm" variant="ghost" disabled={checking} onClick={checkUpdates}>
-              {checking ? t.settings.checking : t.settings.checkUpdates}
-            </Button>
+            {appInfo?.updates && (
+              <Button size="sm" variant="ghost" disabled={checking} onClick={checkUpdates}>
+                {checking ? t.settings.checking : t.settings.checkUpdates}
+              </Button>
+            )}
           </div>
         )}
       </div>

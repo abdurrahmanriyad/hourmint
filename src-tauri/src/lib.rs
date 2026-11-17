@@ -2,6 +2,7 @@ mod commands;
 mod db;
 mod error;
 mod idle;
+mod login_item;
 mod models;
 mod services;
 mod shortcut;
@@ -18,19 +19,29 @@ use tauri_plugin_global_shortcut::ShortcutState;
 use state::{AppState, Paths};
 
 pub fn run() {
-    let app = tauri::Builder::default()
+    let builder = tauri::Builder::default();
+    // Direct-download build only: the App Store build is sandboxed, can't update itself,
+    // and macOS already keeps App Store apps to a single instance.
+    #[cfg(feature = "direct")]
+    let builder = builder
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             windows::show_main(app, None);
         }))
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init());
+    let app = builder
+        // Local log file only (~/Library/Logs/app.hourmint.desktop/), for support requests.
+        .plugin(
+            // Default targets: stdout and the log directory.
+            tauri_plugin_log::Builder::new()
+                .level(log::LevelFilter::Info)
+                .max_file_size(1_000_000)
+                .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepOne)
+                .build(),
+        )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_opener::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
-        .plugin(tauri_plugin_process::init())
-        .plugin(tauri_plugin_autostart::init(
-            tauri_plugin_autostart::MacosLauncher::LaunchAgent,
-            Some(vec!["--hidden"]),
-        ))
         .plugin(
             tauri_plugin_global_shortcut::Builder::new()
                 .with_handler(|app, _shortcut, event| {
@@ -51,8 +62,27 @@ pub fn run() {
             };
             let conn = db::open(&paths.db_path, &paths.backup_dir)
                 .map_err(|e| Box::<dyn std::error::Error>::from(e.to_string()))?;
-            log::info!("database at {}", paths.data_dir.display());
-            let settings = services::settings::get(&conn).map_err(|e| e.to_string())?;
+            log::info!(
+                "Hourmint {} ({}) starting; data at {}",
+                app.package_info().version,
+                if cfg!(feature = "direct") { "direct" } else { "app store" },
+                paths.data_dir.display()
+            );
+            let mut settings = services::settings::get(&conn).map_err(|e| e.to_string())?;
+            // Launch at login: migrate the old LaunchAgent, then trust what macOS reports
+            // (the user can also change it in System Settings → Login Items).
+            #[cfg(all(target_os = "macos", feature = "direct"))]
+            if login_item::remove_legacy_launch_agent() && settings.launch_at_login {
+                if let Err(e) = login_item::set(true) {
+                    log::warn!("launch at login: {e}");
+                }
+            }
+            let at_login = login_item::is_enabled();
+            if at_login != settings.launch_at_login {
+                let patch = models::SettingsPatch { launch_at_login: Some(at_login), ..Default::default() };
+                settings = services::settings::update(&conn, &patch).map_err(|e| e.to_string())?;
+            }
+            let launched_at_login = login_item::launched_at_login();
             app.manage(AppState {
                 db: Mutex::new(conn),
                 paths,
@@ -81,7 +111,7 @@ pub fn run() {
                         let _ = w.hide();
                     }
                 });
-                let hidden = std::env::args().any(|a| a == "--hidden");
+                let hidden = launched_at_login || std::env::args().any(|a| a == "--hidden");
                 if !hidden {
                     let _ = main.show();
                     let _ = main.set_focus();
@@ -143,6 +173,7 @@ pub fn run() {
             commands::show_main_window,
             commands::hide_popover,
             commands::quit_app,
+            commands::app_info,
         ])
         .build(tauri::generate_context!())
         .expect("error while building Hourmint");

@@ -32,7 +32,7 @@ Data lives in `~/Library/Application Support/app.hourmint.desktop/` (`hourmint.s
 | `src/lib/` | Typed API, formatting (currency minor units, durations, dates), React Query hooks, PDF templates |
 | `src/pages/`, `src/windows/` | Screens; the same bundle renders the main window, popover or idle prompt depending on the window label |
 | `src/lib/updates.ts` | In-app updates (Tauri updater) from GitHub Releases |
-| `site/` | Landing page (static HTML), published to GitHub Pages by `.github/workflows/pages.yml` |
+| `site/` | Landing page and privacy policy (static HTML), published to <https://hourmint.abdur.tech> by `.github/workflows/pages.yml` |
 
 Conventions follow the requirements: UUID text ids, `created_at/updated_at/deleted_at` on every table with soft deletes, UTC ISO 8601 timestamps, money as integer minor units, durations in seconds. The running timer is the single entry with `ended_at IS NULL` (enforced by a unique partial index), so it survives quit, crash and sleep.
 
@@ -45,7 +45,21 @@ Conventions follow the requirements: UUID text ids, `created_at/updated_at/delet
 - **Global shortcut** is off by default; set one in Settings → Timer.
 - **Extra columns** beyond the spec: `settings.number_locale`, `reminder_*`, `timesheet_show_source`, `onboarded`; `invoices.period_start/period_end`, `discount_amount`; `time_entries.invoice_rate`.
 
-## Release (macOS)
+## Builds
+
+There are two builds of the same code:
+
+| | Direct download | Mac App Store |
+|---|---|---|
+| Cargo features | `direct` (default) | `--no-default-features` |
+| Sandbox | No | Yes (`src-tauri/appstore/entitlements.plist`) |
+| Updates | In-app, from GitHub Releases | By the App Store |
+| Data folder | `~/Library/Application Support/app.hourmint.desktop/` | `~/Library/Containers/app.hourmint.desktop/` |
+| Build | `npm run build:local` / release workflow | `npm run build:appstore` (see [docs/APP_STORE.md](docs/APP_STORE.md)) |
+
+Launch at login uses SMAppService in both builds. Logs are written to `~/Library/Logs/app.hourmint.desktop/` (inside the container for the App Store build).
+
+## Release (direct download, macOS)
 
 Releases are built by GitHub Actions (`.github/workflows/release.yml`) as a universal app (Apple Silicon + Intel) and published to [GitHub Releases](https://github.com/abdurrahmanriyad/hourmint/releases). The app checks `releases/latest/download/latest.json` on launch and every 12 hours, and Settings has a "Check for updates" button.
 
@@ -55,7 +69,7 @@ One-time setup:
    - `TAURI_SIGNING_PRIVATE_KEY`: the contents of `~/.tauri/hourmint.key` (the updater signing key; its public half is in `tauri.conf.json`). **Back this file up.** If it's lost, installed copies can't verify future updates.
    - `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`: empty (the key has no password).
 2. The repository must be public for the updater and download links to work without a token.
-3. To publish the landing page, enable GitHub Pages with source "GitHub Actions".
+3. To publish the landing page, enable GitHub Pages with source "GitHub Actions" and custom domain `hourmint.abdur.tech` (DNS: CNAME `hourmint` → `abdurrahmanriyad.github.io`).
 
 To cut a release:
 
@@ -67,3 +81,7 @@ git push --follow-tags     # CI builds, tests and drafts the release
 Then open the draft on GitHub and publish it. Installed apps see the update once it's published.
 
 Until there is an Apple Developer ID, builds are ad-hoc signed (`signingIdentity: "-"`). macOS asks users to confirm the first launch: System Settings → Privacy & Security → Open Anyway. To sign and notarize later, add the `APPLE_*` secrets and uncomment them in the release workflow.
+
+## Licence
+
+[MIT](LICENSE). The bundled Noto Sans fonts are under the SIL Open Font License (`src/assets/fonts/OFL.txt`).

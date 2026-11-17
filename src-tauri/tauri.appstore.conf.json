@@ -1,0 +1,12 @@
+{
+  "bundle": {
+    "targets": ["app"],
+    "createUpdaterArtifacts": false,
+    "macOS": {
+      "entitlements": "appstore/entitlements.plist"
+    }
+  },
+  "plugins": {
+    "updater": null
+  }
+}

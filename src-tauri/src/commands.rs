@@ -20,7 +20,15 @@ type S<'a> = State<'a, AppState>;
 // ------------------------------------------------------------------ settings
 
 #[tauri::command]
-pub fn get_settings(state: S) -> AppResult<Settings> {
+pub fn get_settings(window: tauri::Window, state: S) -> AppResult<Settings> {
+    // Every window fetches settings first, so this records that its UI loaded.
+    static SEEN: std::sync::Mutex<Vec<String>> = std::sync::Mutex::new(Vec::new());
+    if let Ok(mut seen) = SEEN.lock() {
+        if !seen.iter().any(|l| l == window.label()) {
+            seen.push(window.label().to_string());
+            log::info!("{} window loaded", window.label());
+        }
+    }
     state.with_db(settings::get)
 }
 
@@ -32,17 +40,13 @@ pub fn update_settings(app: AppHandle, state: S, patch: SettingsPatch) -> AppRes
             crate::shortcut::register(&app, sc, Some(&before.global_shortcut))?;
         }
     }
-    let after = state.with_db(|c| settings::update(c, &patch))?;
     if let Some(enabled) = patch.launch_at_login {
         if enabled != before.launch_at_login {
-            use tauri_plugin_autostart::ManagerExt;
-            let al = app.autolaunch();
-            let r = if enabled { al.enable() } else { al.disable() };
-            if let Err(e) = r {
-                log::warn!("autostart toggle failed: {e}");
-            }
+            crate::login_item::set(enabled)
+                .map_err(|e| AppError::Other(format!("Could not change launch at login: {e}")))?;
         }
     }
+    let after = state.with_db(|c| settings::update(c, &patch))?;
     notify_changed(&app);
     Ok(after)
 }
@@ -539,4 +543,18 @@ pub fn hide_popover(app: AppHandle) -> AppResult<()> {
 #[tauri::command]
 pub fn quit_app(app: AppHandle) {
     app.exit(0);
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AppInfo {
+    /// "direct" (GitHub download, self-updating) or "appstore".
+    pub distribution: &'static str,
+    pub updates: bool,
+}
+
+#[tauri::command]
+pub fn app_info() -> AppInfo {
+    let direct = cfg!(feature = "direct");
+    AppInfo { distribution: if direct { "direct" } else { "appstore" }, updates: direct }
 }

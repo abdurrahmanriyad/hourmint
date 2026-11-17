@@ -1,0 +1,12 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "direct",
+  "description": "Self-update permissions for the direct-download build (not in the App Store build)",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "updater:default",
+    "process:allow-restart"
+  ]
+}

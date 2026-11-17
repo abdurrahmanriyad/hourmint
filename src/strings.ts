@@ -311,6 +311,7 @@ export const t = {
     weekdaysLong: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     version: (v: string) => `Hourmint ${v}`,
     privacy: "Hourmint stores all data on this Mac. The only network request is checking GitHub for app updates.",
+    privacyOffline: "Hourmint stores all data on this Mac and never connects to the internet.",
     checkUpdates: "Check for updates",
     checking: "Checking…",
     upToDate: "Hourmint is up to date",

@@ -60,6 +60,7 @@ const responses: Record<string, unknown> = {
   next_invoice_number: "INV-2026-0002",
   find_overlaps: [],
   data_info: { dbPath: "/tmp/hourmint.sqlite", backupDir: "/tmp/backups", backups: [], schemaVersion: 1, appVersion: "0.1.0" },
+  app_info: { distribution: "direct", updates: true },
   get_idle_state: { idleSince: iso(15), entry: running },
 };
 
