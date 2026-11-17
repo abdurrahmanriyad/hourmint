@@ -1,6 +1,10 @@
 # Hourmint
 
-Local-first desktop time tracker for freelancers: track hours from the menu bar, keep an honest work log, and turn selected hours into a PDF invoice with a detailed timesheet.
+Free, open source time tracker for Mac. Track client work from the menu bar, keep an honest work log, and turn selected hours into a PDF invoice with a detailed timesheet. Your data stays on your Mac.
+
+**[Website](https://hourmint.abdur.tech)** | **[Download for Mac](https://github.com/abdurrahmanriyad/hourmint/releases/latest/download/Hourmint.dmg)** (macOS 13+, Apple Silicon and Intel)
+
+![Hourmint: the menu bar timer, its popover and the work log](site/img/hero.webp)
 
 ## Develop
 

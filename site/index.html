@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hourmint: time tracking for client work</title>
-  <meta name="description" content="A menu bar time tracker for freelancers. Record the work you do for each client, keep an honest work log, and create PDF invoices with a detailed timesheet. Your data stays on your Mac." />
+  <title>Hourmint: Free Mac Time Tracker with Timesheets and Invoices</title>
+  <meta name="description" content="Free, open source Mac time tracker. Track client work from the menu bar, keep an honest work log and create timesheets and PDF invoices. No account needed." />
   <link rel="canonical" href="https://hourmint.abdur.tech/" />
-  <meta property="og:title" content="Hourmint: time tracking for client work" />
+  <meta property="og:title" content="Hourmint: Free Mac Time Tracker with Timesheets and Invoices" />
+  <meta property="og:site_name" content="Hourmint" />
+  <meta name="author" content="Abdur Rahman" />
   <meta property="og:description" content="Menu bar time tracking for freelancers: an honest record of your client work, with timesheets and invoices. Private, free and open source." />
   <meta property="og:image" content="https://hourmint.abdur.tech/img/og.png" />
   <meta property="og:image:width" content="1200" />
@@ -124,6 +126,108 @@
     footer a:hover { color: var(--text); }
     @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Hourmint",
+  "url": "https://hourmint.abdur.tech/",
+  "description": "Free, open source menu bar time tracker for Mac. Track client work, keep an honest work log, and create timesheets and PDF invoices. Your data stays on your Mac.",
+  "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "Time tracking",
+  "operatingSystem": "macOS 13 or later",
+  "downloadUrl": "https://github.com/abdurrahmanriyad/hourmint/releases/latest/download/Hourmint.dmg",
+  "image": "https://hourmint.abdur.tech/img/icon.png",
+  "screenshot": "https://hourmint.abdur.tech/img/og.png",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isAccessibleForFree": true,
+  "license": "https://opensource.org/licenses/MIT",
+  "author": {
+    "@type": "Person",
+    "name": "Abdur Rahman",
+    "url": "https://abdur.tech"
+  },
+  "sameAs": [
+    "https://github.com/abdurrahmanriyad/hourmint"
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is Hourmint really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It's free and open source under the MIT licence. There's no paid plan, no trial and no ads."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Hourmint send invoices or take payments?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Hourmint creates the PDF invoice and timesheet. You send them to your client and get paid the way you already do."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it sync between Macs or with my phone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Your data stays on one Mac, and there's no phone app. To move to a new Mac, use Settings > Data > Back up to file, then Restore from file on the new Mac."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a Windows or Linux version?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not yet. Hourmint is Mac only for now. If you'd like another platform, open an issue and say so."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "macOS says it can't verify the developer. Is it safe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hourmint isn't notarized by Apple yet, so macOS shows this warning the first time. Go to System Settings > Privacy & Security and click Open Anyway. The full source code is on GitHub if you'd like to check it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do updates work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hourmint checks GitHub for a new version when it starts and every 12 hours. When one is available, you install it from inside the app. A running timer keeps running."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is it open source?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "So you can see exactly what it does with your data, and so it keeps working for you whatever happens to the project."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do I report a bug or ask for a feature?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Open an issue on GitHub. You can also use Report a problem in the app's Settings."
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="top">
@@ -141,9 +245,9 @@
 
   <main>
     <div class="hero wrap">
-      <span class="eyebrow">A time tracker for freelancers and contractors</span>
+      <span class="eyebrow">Free, open source time tracker for Mac</span>
       <h1>Every hour of client work, on record.</h1>
-      <p class="lead">Hourmint lives in your menu bar. Start a timer when you begin, and it keeps a clear, honest record of what you worked on, for which client and for how long. When it's time to bill, it turns that record into a PDF invoice with a detailed timesheet.</p>
+      <p class="lead">Hourmint is a menu bar time tracker for freelancers and contractors. Start a timer when you begin, and it keeps a clear, honest record of what you worked on, for which client and for how long. When it's time to bill, it turns that record into a PDF invoice with a detailed timesheet.</p>
       <div class="cta">
         <a class="btn btn-primary" href="https://github.com/abdurrahmanriyad/hourmint/releases/latest/download/Hourmint.dmg">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg>
@@ -164,7 +268,7 @@
 
     <section id="features">
       <div class="wrap">
-        <h2>From the first timer to the final timesheet.</h2>
+        <h2>Time tracking, timesheets and invoices in one app.</h2>
         <p class="section-lead">No team features, no dashboards to configure. Just the parts a solo freelancer actually uses every day.</p>
         <div class="grid">
           <div class="card">
@@ -204,7 +308,7 @@
     <section>
       <div class="wrap split">
         <div>
-          <h2>Always one click away.</h2>
+          <h2>A time tracker that lives in your menu bar.</h2>
           <p class="section-lead">Click the clock in your menu bar to see what's running, edit the description, or jump back into something you did yesterday.</p>
           <ul>
             <li><span><strong>Quick start.</strong> Your recent tasks, one click to resume.</span></li>
@@ -219,7 +323,7 @@
     <section>
       <div class="wrap split reverse">
         <div>
-          <h2>A record your clients can check.</h2>
+          <h2>Timesheets and invoices your clients can check.</h2>
           <p class="section-lead">Turn a month of work into a clear PDF with the timesheet attached, so your client sees exactly what was done and when. You send it however you like. Hourmint doesn't handle payments.</p>
           <ul>
             <li><span><strong>Your numbering.</strong> Patterns like <code>INV-{YYYY}-{0001}</code>.</span></li>
@@ -233,7 +337,7 @@
 
     <section id="privacy" class="privacy">
       <div class="wrap">
-        <h2>Your data stays on your Mac.</h2>
+        <h2>A private time tracker. Your data stays on your Mac.</h2>
         <p class="section-lead">Hourmint is local-first. There is no account to create and no server holding your client list.</p>
         <div class="grid">
           <div class="card"><h3>No cloud</h3><p>Everything is stored in a single database file in your Library folder. Back it up, move it or delete it. It's yours.</p></div>
@@ -245,7 +349,7 @@
 
     <section id="install">
       <div class="wrap">
-        <h2>Install in a minute.</h2>
+        <h2>Install Hourmint on your Mac in a minute.</h2>
         <p class="section-lead">Hourmint isn't notarized by Apple yet, so macOS asks you to confirm the first launch.</p>
         <div class="install">
           <div class="card"><h3>Download</h3><p>Download <a href="https://github.com/abdurrahmanriyad/hourmint/releases/latest/download/Hourmint.dmg">Hourmint.dmg</a>, open it and drag Hourmint to your Applications folder.</p></div>
@@ -257,7 +361,7 @@
 
     <section id="faq">
       <div class="wrap faq">
-        <h2>Questions</h2>
+        <h2>Frequently asked questions</h2>
         <details>
           <summary>Is Hourmint really free?</summary>
           <p>Yes. It's free and open source under the MIT licence. There's no paid plan, no trial and no ads.</p>
