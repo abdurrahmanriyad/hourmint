@@ -11,7 +11,7 @@ import appIcon from "../assets/app-icon.png";
 
 const STEPS = 4;
 
-/** OB-1/OB-2: first-run flow. Every step except the client can be skipped. */
+/** First-run flow. Every step except the client can be skipped. */
 export function Onboarding() {
   const s = useSettingsValue();
   const ui = useUi();

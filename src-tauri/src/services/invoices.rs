@@ -1,5 +1,5 @@
 //! Invoices: line generation (grouping + rounding), totals, numbering, locking
-//! and statuses (IN-1 … IN-13).
+//! and statuses.
 
 use std::collections::BTreeMap;
 
@@ -328,7 +328,7 @@ pub fn list(conn: &Connection, f: &InvoiceFilter) -> AppResult<Vec<Invoice>> {
     Ok(rows)
 }
 
-/// IN-11: outstanding (sent), paid, draft and overdue totals per currency.
+/// Outstanding (sent), paid, draft and overdue totals per currency.
 pub fn totals(conn: &Connection, client_id: Option<&str>) -> AppResult<Vec<InvoiceTotals>> {
     let today = chrono::Local::now().date_naive().to_string();
     let mut stmt = conn.prepare(
@@ -354,7 +354,7 @@ pub fn totals(conn: &Connection, client_id: Option<&str>) -> AppResult<Vec<Invoi
     Ok(rows)
 }
 
-/// IN-1: unbilled, billable, finished entries for a client within [from, to) plus
+/// Unbilled, billable, finished entries for a client within [from, to) plus
 /// anything already on `invoice_id` (when editing a draft).
 pub fn candidate_entries(
     conn: &Connection,
@@ -468,7 +468,7 @@ pub fn save_draft(conn: &Connection, input: &InvoiceInput) -> AppResult<InvoiceD
         None => None,
     };
 
-    // Number: explicit override or generated from the pattern (IN-6).
+    // Number: explicit override or generated from the pattern.
     let requested = input.number.as_deref().map(str::trim).filter(|n| !n.is_empty());
     let (number, used_seq) = match (requested, &existing) {
         (Some(n), _) => (n.to_string(), None),
@@ -590,7 +590,7 @@ pub fn save_draft(conn: &Connection, input: &InvoiceInput) -> AppResult<InvoiceD
     get_detail(conn, &id)
 }
 
-/// IN-8/IN-10: change status by hand. Leaving draft finalises (entries stay locked as billed).
+/// Change status by hand. Leaving draft finalises (entries stay locked as billed).
 pub fn set_status(conn: &Connection, id: &str, status: &str) -> AppResult<Invoice> {
     let inv = get_invoice(conn, id)?;
     let now = time::now_iso();
@@ -621,7 +621,7 @@ pub fn set_status(conn: &Connection, id: &str, status: &str) -> AppResult<Invoic
     get_invoice(conn, id)
 }
 
-/// Delete an invoice (soft) and release its entries (IN-10).
+/// Delete an invoice (soft) and release its entries.
 pub fn delete(conn: &Connection, id: &str) -> AppResult<()> {
     get_invoice(conn, id)?;
     let tx = conn.unchecked_transaction()?;
@@ -638,7 +638,7 @@ pub fn delete(conn: &Connection, id: &str) -> AppResult<()> {
     Ok(())
 }
 
-/// IN-12: entries for a standalone timesheet (any billed state, billable only unless `all`).
+/// Entries for a standalone timesheet (any billed state, billable only unless `all`).
 pub fn timesheet_entries(
     conn: &Connection,
     client_id: &str,

@@ -8,3 +8,4 @@ src-tauri/gen/schemas
 .env
 tsconfig.tsbuildinfo
 src-tauri/appstore/*.provisionprofile
+REQUIREMENTS.md

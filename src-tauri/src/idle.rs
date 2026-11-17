@@ -1,5 +1,5 @@
-//! Background monitor: idle detection (TM-7), long-timer warning (TM-8),
-//! start reminder (TM-9) and the daily automatic backup.
+//! Background monitor: idle detection, long-timer warning,
+//! start reminder and the daily automatic backup.
 
 use chrono::{DateTime, Datelike, Duration, Local, Utc};
 use tauri::{AppHandle, Manager};

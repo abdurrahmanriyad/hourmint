@@ -102,7 +102,7 @@ pub fn run() {
             tray::spawn_ticker(handle.clone());
             idle::spawn_monitor(handle.clone());
 
-            // MB-4: closing the main window keeps the app running in the menu bar.
+            // Closing the main window keeps the app running in the menu bar.
             if let Some(main) = app.get_webview_window("main") {
                 let w = main.clone();
                 main.on_window_event(move |e| {

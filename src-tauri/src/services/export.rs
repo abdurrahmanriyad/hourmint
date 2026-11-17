@@ -1,4 +1,4 @@
-//! ST-5: export everything as JSON (one file) or CSV (one file per table).
+//! Export everything as JSON (one file) or CSV (one file per table).
 
 use std::path::Path;
 

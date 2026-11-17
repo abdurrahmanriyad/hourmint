@@ -1,4 +1,4 @@
-// Invoice and timesheet PDF templates (IN-9, IN-12), rendered on-device.
+// Invoice and timesheet PDF templates, rendered on-device.
 import { Document, Font, Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import regular from "../../assets/fonts/NotoSans-Regular.ttf?url";
 import semibold from "../../assets/fonts/NotoSans-SemiBold.ttf?url";

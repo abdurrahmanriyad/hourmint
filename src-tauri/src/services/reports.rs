@@ -1,4 +1,4 @@
-//! Summaries (WL-3, WL-4) and CSV export of entries (WL-5).
+//! Summaries and CSV export of entries.
 
 use std::collections::BTreeMap;
 

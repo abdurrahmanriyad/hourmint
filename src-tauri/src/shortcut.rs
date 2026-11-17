@@ -1,4 +1,4 @@
-//! MB-3: global start/stop shortcut.
+//! Global start/stop shortcut.
 
 use tauri::{AppHandle, Manager};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut};

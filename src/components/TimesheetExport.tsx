@@ -7,7 +7,7 @@ import { usePrefs, useSettingsValue } from "../lib/queries";
 import { t } from "../strings";
 import { Button, Checkbox, Field, Input, Modal, useUi } from "./ui";
 
-/** IN-12: standalone timesheet PDF for a client and period. */
+/** Standalone timesheet PDF for a client and period. */
 export function TimesheetExportModal({ client, onClose }: { client: Client; onClose: () => void }) {
   const ui = useUi();
   const prefs = usePrefs();

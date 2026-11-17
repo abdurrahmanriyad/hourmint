@@ -7,7 +7,7 @@ import { AlertIcon, PlayIcon, StopIcon } from "./icons";
 import { ProjectPicker } from "./inputs";
 import { Button, ColorDot, Input, Toggle, cx, useUi } from "./ui";
 
-/** Start form or running timer (TM-1, TM-2, TM-5). */
+/** Start form or running timer. */
 export function TimerBar({ compact = false }: { compact?: boolean }) {
   const ui = useUi();
   const prefs = usePrefs();

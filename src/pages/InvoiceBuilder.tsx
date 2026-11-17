@@ -304,7 +304,7 @@ export function InvoiceBuilderPage() {
     seen.current = new Set(ids);
   }, [detail]);
 
-  // IN-13: copy settings from another invoice.
+  // Copy settings from another invoice.
   const copyFrom = search.get("copy");
   useEffect(() => {
     if (!copyFrom || invoiceId) return;
@@ -345,7 +345,7 @@ export function InvoiceBuilderPage() {
   });
   const entries = readOnly ? (detail?.entries ?? []) : candidates;
 
-  // Newly visible candidates are selected by default (IN-1); explicit deselections stick.
+  // Newly visible candidates are selected by default; explicit deselections stick.
   useEffect(() => {
     if (readOnly) return;
     const fresh = candidates.filter((e) => !seen.current.has(e.id));

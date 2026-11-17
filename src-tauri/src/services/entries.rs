@@ -89,7 +89,7 @@ pub fn stop_timer(conn: &Connection, at: DateTime<Utc>) -> AppResult<Option<Entr
     get_entry(conn, &running.id).map(Some)
 }
 
-/// Start a new timer at `at`, stopping and saving any running one first (TM-3).
+/// Start a new timer at `at`, stopping and saving any running one first.
 pub fn start_timer(conn: &Connection, input: &StartTimerInput, at: DateTime<Utc>) -> AppResult<Entry> {
     ensure_active_project(conn, &input.project_id)?;
     let tx = conn.unchecked_transaction()?;
@@ -105,7 +105,7 @@ pub fn start_timer(conn: &Connection, input: &StartTimerInput, at: DateTime<Utc>
     get_entry(conn, &id)
 }
 
-/// Change client/project/description of the running timer (TM-5).
+/// Change client/project/description of the running timer.
 pub fn update_running(conn: &Connection, patch: &RunningPatch) -> AppResult<Option<Entry>> {
     let Some(running) = get_running(conn)? else {
         return Ok(None);
@@ -128,7 +128,7 @@ pub fn update_running(conn: &Connection, patch: &RunningPatch) -> AppResult<Opti
     get_entry(conn, &running.id).map(Some)
 }
 
-/// "Continue" a past entry: new timer, same project/description/billable (TM-6).
+/// "Continue" a past entry: new timer, same project/description/billable.
 pub fn continue_entry(conn: &Connection, id: &str, at: DateTime<Utc>) -> AppResult<Entry> {
     let e = get_entry(conn, id)?;
     start_timer(
@@ -138,7 +138,7 @@ pub fn continue_entry(conn: &Connection, id: &str, at: DateTime<Utc>) -> AppResu
     )
 }
 
-/// The project used for the most recent entry (for the global shortcut, MB-3).
+/// The project used for the most recent entry (for the global shortcut).
 pub fn last_used_project(conn: &Connection) -> AppResult<Option<String>> {
     Ok(conn
         .query_row(
@@ -177,7 +177,7 @@ struct ValidRange {
     seconds: i64,
 }
 
-/// TE-6: end after start, not in the future, no overlap with the running timer.
+/// End after start, not in the future, no overlap with the running timer.
 fn validate_range(conn: &Connection, started_at: &str, ended_at: &str, now: DateTime<Utc>) -> AppResult<ValidRange> {
     let start = parse_iso(started_at)?;
     let end = parse_iso(ended_at)?;
@@ -199,7 +199,7 @@ fn validate_range(conn: &Connection, started_at: &str, ended_at: &str, now: Date
     Ok(ValidRange { start: to_iso(start), end: to_iso(end), seconds: seconds_between(start, end) })
 }
 
-/// TE-1: add a manual entry.
+/// Add a manual entry.
 pub fn create_entry(conn: &Connection, input: &EntryInput, now: DateTime<Utc>) -> AppResult<SaveEntryResult> {
     ensure_active_project(conn, &input.project_id)?;
     let r = validate_range(conn, &input.started_at, &input.ended_at, now)?;
@@ -214,7 +214,7 @@ pub fn create_entry(conn: &Connection, input: &EntryInput, now: DateTime<Utc>) -
     Ok(SaveEntryResult { entry: get_entry(conn, &id)?, overlaps })
 }
 
-/// TE-2/TE-3: edit a finished, unbilled entry. Changing a timer entry's times marks it `timer_edited`.
+/// Edit a finished, unbilled entry. Changing a timer entry's times marks it `timer_edited`.
 pub fn update_entry(conn: &Connection, id: &str, input: &EntryInput, now: DateTime<Utc>) -> AppResult<SaveEntryResult> {
     let existing = get_entry(conn, id)?;
     ensure_unlocked(&existing)?;
@@ -259,7 +259,7 @@ pub fn delete_entry(conn: &Connection, id: &str) -> AppResult<()> {
     Ok(())
 }
 
-/// TE-7: split a finished entry into two at `at`.
+/// Split a finished entry into two at `at`.
 pub fn split_entry(conn: &Connection, id: &str, at: &str) -> AppResult<(Entry, Entry)> {
     let e = get_entry(conn, id)?;
     ensure_unlocked(&e)?;
@@ -338,7 +338,7 @@ pub fn list_entries(conn: &Connection, f: &EntryFilter) -> AppResult<Vec<Entry>>
     Ok(rows)
 }
 
-/// Recent distinct project + description combinations for quick start (MB-2).
+/// Recent distinct project + description combinations for quick start.
 pub fn recent_combos(conn: &Connection, limit: i64) -> AppResult<Vec<RecentCombo>> {
     let mut stmt = conn.prepare(
         "SELECT e.project_id, p.name, p.color, c.id, c.name, e.description, MAX(e.started_at) AS last_used

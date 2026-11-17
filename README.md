@@ -1,6 +1,6 @@
 # Hourmint
 
-Local-first desktop time tracker for freelancers: track hours from the menu bar, keep an honest work log, and turn selected hours into a PDF invoice with a detailed timesheet. See [REQUIREMENTS.md](REQUIREMENTS.md).
+Local-first desktop time tracker for freelancers: track hours from the menu bar, keep an honest work log, and turn selected hours into a PDF invoice with a detailed timesheet.
 
 ## Develop
 
@@ -34,7 +34,7 @@ Data lives in `~/Library/Application Support/app.hourmint.desktop/` (`hourmint.s
 | `src/lib/updates.ts` | In-app updates (Tauri updater) from GitHub Releases |
 | `site/` | Landing page and privacy policy (static HTML), published to <https://hourmint.abdur.tech> by `.github/workflows/pages.yml` |
 
-Conventions follow the requirements: UUID text ids, `created_at/updated_at/deleted_at` on every table with soft deletes, UTC ISO 8601 timestamps, money as integer minor units, durations in seconds. The running timer is the single entry with `ended_at IS NULL` (enforced by a unique partial index), so it survives quit, crash and sleep.
+Conventions: UUID text ids, `created_at/updated_at/deleted_at` on every table with soft deletes, UTC ISO 8601 timestamps, money as integer minor units, durations in seconds. The running timer is the single entry with `ended_at IS NULL` (enforced by a unique partial index), so it survives quit, crash and sleep.
 
 ### Decisions worth knowing
 

@@ -1,4 +1,4 @@
-//! MB-1/MB-2: menu bar icon with elapsed time, left-click popover, right-click menu.
+//! Menu bar icon with elapsed time, left-click popover, right-click menu.
 
 use tauri::image::Image;
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};

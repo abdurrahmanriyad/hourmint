@@ -11,7 +11,7 @@ import { TimerBar } from "../components/TimerBar";
 import { ExternalIcon, PlayIcon } from "../components/icons";
 import { Button, ColorDot, useUi } from "../components/ui";
 
-/** MB-2: menu bar popover. */
+/** Menu bar popover. */
 export function Popover() {
   const ui = useUi();
   const qc = useQueryClient();

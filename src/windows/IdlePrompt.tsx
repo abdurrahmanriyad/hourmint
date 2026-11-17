@@ -8,7 +8,7 @@ import { useNow, usePrefs } from "../lib/queries";
 import { t } from "../strings";
 import { Button, useUi } from "../components/ui";
 
-/** TM-7: shown when the user returns from idle while a timer runs. */
+/** Shown when the user returns from idle while a timer runs. */
 export function IdlePrompt() {
   const prefs = usePrefs();
   const ui = useUi();

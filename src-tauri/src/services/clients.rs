@@ -153,7 +153,7 @@ pub fn set_client_archived(conn: &Connection, id: &str, archived: bool) -> AppRe
     get_client(conn, id)
 }
 
-/// Delete is only allowed for clients that have never had entries or invoices (CL-4).
+/// Delete is only allowed for clients that have never had entries or invoices.
 pub fn delete_client(conn: &Connection, id: &str) -> AppResult<()> {
     let c = get_client(conn, id)?;
     let invoices: i64 = conn.query_row(

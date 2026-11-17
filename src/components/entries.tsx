@@ -151,7 +151,7 @@ export function EntryDayGroups({
   );
 }
 
-/** Add or edit a manual entry (TE-1, TE-2) with live validation and overlap warning (TE-6). */
+/** Add or edit a manual entry with live validation and overlap warning. */
 export function EntryFormModal({
   open,
   onClose,
@@ -331,7 +331,7 @@ export function EntryFormModal({
   );
 }
 
-/** TE-7: split an entry at a chosen time. */
+/** Split an entry at a chosen time. */
 export function SplitModal({ entry, onClose }: { entry: Entry | null; onClose: () => void }) {
   const ui = useUi();
   const prefs = usePrefs();

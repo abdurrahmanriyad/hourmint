@@ -1,4 +1,4 @@
-//! ST-4 launch at login via SMAppService (macOS 13+). Works in the App Store sandbox,
+//! Launch at login via SMAppService (macOS 13+). Works in the App Store sandbox,
 //! and the user can also see and change it in System Settings → General → Login Items.
 
 #[cfg(target_os = "macos")]
