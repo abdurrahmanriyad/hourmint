@@ -9,3 +9,4 @@ src-tauri/gen/schemas
 tsconfig.tsbuildinfo
 src-tauri/appstore/*.provisionprofile
 REQUIREMENTS.md
+marketing/
