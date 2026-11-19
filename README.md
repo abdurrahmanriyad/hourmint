@@ -37,7 +37,7 @@
 - **Honest work log.** Day, week and custom views with totals per client and project. Manual and edited entries are labelled.
 - **Timesheets and PDF invoices.** Pick the hours to bill, group them the way your client likes, and export a PDF with every entry attached. Hours already on an invoice are locked, so nothing is billed twice.
 - **Any currency, any rate.** Each client has its own currency and hourly rate, with per-project overrides. Invoices keep the rate they were made with.
-- **Rounding, tax and discounts.** Your own invoice numbering (`INV-{YYYY}-{0001}`), and sent, paid and overdue tracking.
+- **Rounding, tax and discounts.** Your own invoice numbering, like `INV-{YYYY}-{0001}`.
 - **Idle detection and reminders.** Hourmint notices when you walk away, nudges you if you forget to start, and warns you about a timer that has run for hours.
 - **Backups built in.** A daily backup, plus export to CSV or JSON at any time.
 - **Private by design.** No account, no cloud, no analytics. The only network request is the update check against GitHub Releases.
