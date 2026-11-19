@@ -104,43 +104,40 @@ pub fn idle_step(
 /// Apply the user's choice from the idle prompt.
 pub fn resolve(state: &AppState, action: &str) -> AppResult<()> {
     let (since, entry_id) = {
-        let mut idle = state.idle.lock().unwrap();
-        let v = (idle.idle_since, idle.entry_id.clone());
-        *idle = Default::default();
-        v
+        let idle = state.idle.lock().unwrap();
+        (idle.idle_since, idle.entry_id.clone())
     };
-    let (Some(since), Some(entry_id)) = (since, entry_id) else { return Ok(()) };
-    state.with_db(|c| {
-        let Some(running) = entries::get_running(c)? else { return Ok(()) };
-        if running.id != entry_id {
-            return Ok(());
-        }
-        match action {
-            "keep" => Ok(()),
-            "discard" => {
-                // Close the entry when idling began, then carry on from now.
-                let tx = c.unchecked_transaction()?;
-                entries::stop_timer(&tx, since)?;
-                entries::start_timer(
-                    &tx,
-                    &StartTimerInput {
-                        project_id: running.project_id.clone(),
-                        description: running.description.clone(),
-                        billable: running.billable,
-                    },
-                    time::now(),
-                )?;
-                tx.commit()?;
-                Ok(())
-            }
-            "discard_stop" => {
-                entries::stop_timer(c, since)?;
-                Ok(())
-            }
-            _ => validation("Unknown idle action."),
-        }
-    })?;
+    if let (Some(since), Some(entry_id)) = (since, entry_id) {
+        state.with_db(|c| apply(c, action, &entry_id, since, time::now()))?;
+    }
+    // Clear only once the choice is saved, so a failure leaves the prompt answerable.
+    *state.idle.lock().unwrap() = Default::default();
     Ok(())
+}
+
+/// The database side of an idle choice for the running entry `entry_id`.
+fn apply(c: &rusqlite::Connection, action: &str, entry_id: &str, since: DateTime<Utc>, now: DateTime<Utc>) -> AppResult<()> {
+    let Some(running) = entries::get_running(c)? else { return Ok(()) };
+    if running.id != entry_id {
+        return Ok(());
+    }
+    match action {
+        "keep" => Ok(()),
+        // Close the entry when idling began, then carry on from now.
+        "discard" => entries::restart_timer(
+            c,
+            &StartTimerInput {
+                project_id: running.project_id.clone(),
+                description: running.description.clone(),
+                billable: running.billable,
+            },
+            since,
+            now,
+        )
+        .map(|_| ()),
+        "discard_stop" => entries::stop_timer(c, since).map(|_| ()),
+        _ => validation("Unknown idle action."),
+    }
 }
 
 fn notify(app: &AppHandle, title: &str, body: &str) {
@@ -287,10 +284,30 @@ mod tests {
             t("2026-01-01T09:00:00Z"),
         )
         .unwrap();
-        // Simulate the "discard" branch directly against the DB.
         let since = t("2026-01-01T09:30:00Z");
-        entries::stop_timer(&conn, since).unwrap();
+        let now = t("2026-01-01T10:00:00Z");
+        apply(&conn, "discard", &e.id, since, now).unwrap();
         let first = entries::get_entry(&conn, &e.id).unwrap();
         assert_eq!(first.duration_seconds, 1800);
+        let next = entries::get_running(&conn).unwrap().expect("a new timer runs");
+        assert_ne!(next.id, e.id);
+        assert_eq!(parse_iso(&next.started_at).unwrap(), now);
+        assert_eq!(next.description, "x");
+        assert!(conn.is_autocommit(), "no transaction left open");
+    }
+
+    #[test]
+    fn resolve_discard_stop_ends_entry_at_idle_start() {
+        use crate::services::entries::tests::setup;
+        let (conn, pid) = setup();
+        let e = entries::start_timer(
+            &conn,
+            &StartTimerInput { project_id: pid, description: String::new(), billable: true },
+            t("2026-01-01T09:00:00Z"),
+        )
+        .unwrap();
+        apply(&conn, "discard_stop", &e.id, t("2026-01-01T09:20:00Z"), t("2026-01-01T10:00:00Z")).unwrap();
+        assert_eq!(entries::get_entry(&conn, &e.id).unwrap().duration_seconds, 1200);
+        assert!(entries::get_running(&conn).unwrap().is_none());
     }
 }
