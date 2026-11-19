@@ -91,15 +91,26 @@ pub fn stop_timer(conn: &Connection, at: DateTime<Utc>) -> AppResult<Option<Entr
 
 /// Start a new timer at `at`, stopping and saving any running one first.
 pub fn start_timer(conn: &Connection, input: &StartTimerInput, at: DateTime<Utc>) -> AppResult<Entry> {
+    restart_timer(conn, input, at, at)
+}
+
+/// Stop any running timer at `stop_at` and start a new one at `start_at`, atomically.
+/// Opens its own transaction, so callers must not wrap it in one.
+pub fn restart_timer(
+    conn: &Connection,
+    input: &StartTimerInput,
+    stop_at: DateTime<Utc>,
+    start_at: DateTime<Utc>,
+) -> AppResult<Entry> {
     ensure_active_project(conn, &input.project_id)?;
     let tx = conn.unchecked_transaction()?;
-    stop_timer(&tx, at)?;
+    stop_timer(&tx, stop_at)?;
     let id = time::new_id();
     let now = time::now_iso();
     tx.execute(
         "INSERT INTO time_entries (id, project_id, description, started_at, billable, source, created_at, updated_at)
          VALUES (?1, ?2, ?3, ?4, ?5, 'timer', ?6, ?6)",
-        params![id, input.project_id, input.description.trim(), to_iso(at), input.billable, now],
+        params![id, input.project_id, input.description.trim(), to_iso(start_at), input.billable, now],
     )?;
     tx.commit()?;
     get_entry(conn, &id)
