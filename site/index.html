@@ -108,18 +108,6 @@
     .shot { position: relative; margin: 64px auto 0; max-width: 1140px; border-radius: 18px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); background: var(--surface); }
     @media (max-width: 600px) { .shot { border-radius: 10px; margin-top: 44px; } }
 
-    /* Fact strip */
-    .facts { display: grid; grid-template-columns: repeat(4, 1fr); margin: 72px auto 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .fact { padding: 28px 24px; text-align: left; }
-    .fact + .fact { border-left: 1px solid var(--border); }
-    .fact strong { display: block; font-size: clamp(26px, 3vw, 34px); line-height: 1.1; letter-spacing: -.03em; font-weight: 700; font-variant-numeric: tabular-nums; }
-    .fact span { display: block; margin-top: 6px; font-size: 14.5px; color: var(--muted); line-height: 1.45; }
-    @media (max-width: 860px) {
-      .facts { grid-template-columns: repeat(2, 1fr); }
-      .fact:nth-child(3) { border-left: 0; }
-      .fact:nth-child(n+3) { border-top: 1px solid var(--border); }
-    }
-    @media (max-width: 420px) { .fact { padding: 22px 14px; } .fact strong { font-size: 22px; white-space: nowrap; } .fact span { font-size: 13.5px; } }
 
     /* Sections */
     section { padding: 112px 0; }
@@ -415,13 +403,6 @@
             <img src="img/hero.webp" width="2400" height="1320" fetchpriority="high"
               alt="A Mac desktop with the Hourmint timer showing 0:47:15 in the menu bar, its popover open below it, and the Hourmint work log window behind" />
           </picture>
-        </div>
-
-        <div class="facts" role="list">
-          <div class="fact" role="listitem"><strong>$0</strong><span>No paid plan, no trial, no ads</span></div>
-          <div class="fact" role="listitem"><strong>0 accounts</strong><span>Open the app and start tracking</span></div>
-          <div class="fact" role="listitem"><strong>1 request</strong><span>The update check. Nothing else goes online.</span></div>
-          <div class="fact" role="listitem"><strong>11 MB</strong><span>One download for Apple Silicon and Intel</span></div>
         </div>
       </div>
     </div>
