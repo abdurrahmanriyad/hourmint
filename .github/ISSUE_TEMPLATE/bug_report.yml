@@ -1,0 +1,55 @@
+name: Bug report
+description: Something in Hourmint doesn't work the way it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please check the [open issues](https://github.com/abdurrahmanriyad/hourmint/issues) first in case it's already known.
+        Don't include client names, rates or other private data in screenshots.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect to see instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start a timer on a project
+        2. Put the Mac to sleep for an hour
+        3. Open the popover
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Hourmint version
+      description: Shown at the bottom of Settings.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "macOS 15.2"
+    validations:
+      required: true
+  - type: dropdown
+    id: chip
+    attributes:
+      label: Mac
+      options:
+        - Apple Silicon
+        - Intel
+        - Not sure
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Logs are in ~/Library/Logs/app.hourmint.desktop/. Paste the relevant lines, or drag in a screenshot.
+      render: text
