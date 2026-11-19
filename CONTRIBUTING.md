@@ -24,6 +24,7 @@ Hourmint is a small, focused app for solo freelancers. Changes should keep to th
 Requirements: macOS, Node 22 (`nvm use`), Rust stable and the Xcode command line tools.
 
 ```sh
+nvm use              # Node 22 from .nvmrc; npm install refuses older Node
 npm install
 npm run app          # tauri dev: Vite + the native app with hot reload
 npm run test:all     # typecheck + frontend tests + Rust tests
