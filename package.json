@@ -15,7 +15,8 @@
     "test:all": "npm run typecheck && npm test && npm run test:rust",
     "demo": "vite --port 1430 --open /demo.html",
     "build:local": "tauri build --bundles app,dmg",
-    "build:appstore": "bash scripts/appstore.sh"
+    "build:appstore": "bash scripts/appstore.sh",
+    "record:tour": "node scripts/record-tour.mjs"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",
@@ -40,6 +41,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
     "jsdom": "^31.0.1",
+    "playwright-core": "^1.49.1",
     "tailwindcss": "^4.3.5",
     "typescript": "5.9",
     "vite": "^8.3.8",

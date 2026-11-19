@@ -29,6 +29,7 @@ npm run app          # tauri dev: Vite + the native app with hot reload
 npm run test:all     # typecheck + frontend tests + Rust tests
 npm run demo         # the UI in a normal browser with fake data (src/demo/), for design checks and screenshots
 npm run build:local  # Hourmint.app + .dmg for this Mac in src-tauri/target/release/bundle/
+npm run record:tour  # re-records the README demo animation (needs Chrome and `brew install webp`)
 ```
 
 `npm run demo` opens `/demo.html`. Add `?window=popover&frame=340x500`, `?window=idle&frame=440x260`, `&theme=dark`, `&onboarded=0` or `&clean=1` (hides the menu bar hint). It's the quickest way to work on UI without building the native app.
