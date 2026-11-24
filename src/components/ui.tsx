@@ -462,8 +462,11 @@ export function UiProvider({ children }: { children: ReactNode }) {
         width={420}
         footer={
           <>
-            <Button onClick={() => close(false)}>{t.common.cancel}</Button>
-            <Button variant={pending?.danger ? "danger" : "primary"} onClick={() => close(true)} autoFocus>
+            {/* Dangerous actions start on Cancel so an Enter straight after opening doesn't delete (#12). */}
+            <Button onClick={() => close(false)} autoFocus={!!pending?.danger}>
+              {t.common.cancel}
+            </Button>
+            <Button variant={pending?.danger ? "danger" : "primary"} onClick={() => close(true)} autoFocus={!pending?.danger}>
               {pending?.confirmLabel ?? t.common.confirm}
             </Button>
           </>
