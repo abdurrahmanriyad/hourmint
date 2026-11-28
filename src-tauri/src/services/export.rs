@@ -32,6 +32,17 @@ fn table_rows(conn: &Connection, table: &str) -> AppResult<(Vec<String>, Vec<Vec
     Ok((cols, rows))
 }
 
+/// Makes a text cell safe to open in a spreadsheet. Excel, Numbers and Google
+/// Sheets treat a cell that starts with `=`, `+`, `-`, `@`, a tab or a carriage
+/// return as a formula, so such cells get a leading `'`. Use for text only:
+/// numbers such as a negative amount must stay as they are.
+pub fn csv_text(s: &str) -> String {
+    match s.chars().next() {
+        Some('=' | '+' | '-' | '@' | '\t' | '\r') => format!("'{s}"),
+        _ => s.to_string(),
+    }
+}
+
 pub fn export_json(conn: &Connection) -> AppResult<Vec<u8>> {
     let mut root = Map::new();
     root.insert("app".into(), Value::from("Hourmint"));
@@ -59,7 +70,7 @@ pub fn export_csv_dir(conn: &Connection, dir: &Path) -> AppResult<Vec<String>> {
         for r in rows {
             w.write_record(r.iter().map(|v| match v {
                 Value::Null => String::new(),
-                Value::String(s) => s.clone(),
+                Value::String(s) => csv_text(s),
                 other => other.to_string(),
             }))?;
         }
@@ -83,5 +94,37 @@ mod tests {
         assert_eq!(json["clients"][0]["name"], "Acme");
         let dir = tempfile::tempdir().unwrap();
         assert_eq!(export_csv_dir(&conn, dir.path()).unwrap().len(), TABLES.len());
+    }
+
+    #[test]
+    fn csv_text_neutralises_formulas() {
+        for (input, want) in [
+            ("=1+1", "'=1+1"),
+            ("+1", "'+1"),
+            ("-2", "'-2"),
+            ("@SUM(A1)", "'@SUM(A1)"),
+            ("\tx", "'\tx"),
+            ("\rx", "'\rx"),
+            ("Design review", "Design review"),
+            ("a=b", "a=b"),
+            ("", ""),
+        ] {
+            assert_eq!(csv_text(input), want);
+        }
+    }
+
+    #[test]
+    fn csv_dir_neutralises_text_but_not_numbers() {
+        let (conn, pid) = setup();
+        manual(&conn, &pid, "2026-01-01T09:00:00Z", "2026-01-01T10:00:00Z");
+        conn.execute("UPDATE time_entries SET description = '=HYPERLINK(\"x\")'", []).unwrap();
+        conn.execute("UPDATE clients SET name = '@Acme', default_rate = -100", []).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        export_csv_dir(&conn, dir.path()).unwrap();
+        let entries = std::fs::read_to_string(dir.path().join("time_entries.csv")).unwrap();
+        assert!(entries.contains("'=HYPERLINK"));
+        let clients = std::fs::read_to_string(dir.path().join("clients.csv")).unwrap();
+        assert!(clients.contains("'@Acme"));
+        assert!(clients.contains(",-100,") || clients.ends_with(",-100\n"));
     }
 }
