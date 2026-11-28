@@ -7,6 +7,7 @@ use rusqlite::{types::ToSql, Connection};
 use crate::error::AppResult;
 use crate::models::{CurrencyTotal, EntryFilter, Summary, SummaryRow};
 use crate::services::entries::{filter_sql, list_entries};
+use crate::services::export::csv_text;
 
 const RATE: &str = "COALESCE(e.invoice_rate, p.rate_override, c.default_rate)";
 
@@ -117,15 +118,15 @@ pub fn entries_csv(conn: &Connection, f: &EntryFilter) -> AppResult<Vec<u8>> {
             end.map(|d| d.with_timezone(&chrono::Local).format(local_fmt).to_string()).unwrap_or_default(),
             e.duration_seconds.to_string(),
             hours(e.duration_seconds),
-            e.client_name.clone(),
-            e.project_name.clone(),
-            e.description.clone(),
+            csv_text(&e.client_name),
+            csv_text(&e.project_name),
+            csv_text(&e.description),
             if e.billable { "yes".into() } else { "no".into() },
             e.source.clone(),
             decimal(e.rate, &e.currency),
             decimal(amount, &e.currency),
             e.currency.clone(),
-            e.invoice_number.clone().unwrap_or_default(),
+            csv_text(e.invoice_number.as_deref().unwrap_or_default()),
         ])?;
     }
     w.into_inner().map_err(|e| crate::error::AppError::Other(e.to_string()))
@@ -147,6 +148,20 @@ mod tests {
         assert_eq!(s.by_project.len(), 1);
         let csv = String::from_utf8(entries_csv(&conn, &EntryFilter::default()).unwrap()).unwrap();
         assert!(csv.lines().count() == 2 && csv.contains("90.00"));
+    }
+
+    #[test]
+    fn entries_csv_neutralises_formulas() {
+        let (conn, pid) = setup();
+        manual(&conn, &pid, "2026-01-01T09:00:00Z", "2026-01-01T10:00:00Z");
+        let plain = String::from_utf8(entries_csv(&conn, &EntryFilter::default()).unwrap()).unwrap();
+        assert!(plain.contains(",work,"));
+        conn.execute("UPDATE time_entries SET description = '=1+1'", []).unwrap();
+        conn.execute("UPDATE clients SET name = '-Acme'", []).unwrap();
+        let csv = String::from_utf8(entries_csv(&conn, &EntryFilter::default()).unwrap()).unwrap();
+        assert!(csv.contains(",'=1+1,"));
+        assert!(csv.contains(",'-Acme,"));
+        assert!(csv.contains(",60.00,60.00,USD,"));
     }
 
     #[test]
